@@ -33,9 +33,9 @@ const archivedPosts = sortedPosts.filter(post => post.data.archived);
 
     {archivedPosts.length > 0 && (
       <div>
-        <p class="archive-title">
+        <h2 class="archive-title">
           Older, more embarrassing posts
-        </p>
+        </h2>
 
         <ul class="post-list">
           {archivedPosts.map(post => (
