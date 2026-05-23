@@ -78,20 +78,15 @@ const jsonLd = {
 const filename = post.id.endsWith('.md') ? post.id : `${post.id}.md`;
 ---
 
-{isRedirect ? (
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <meta http-equiv="refresh" content={`0;url=${targetUrl}`} />
-      <link rel="canonical" href={targetUrl} />
-      <title>Redirecting...</title>
-    </head>
-    <body>
-      <p>Redirecting to <a href={targetUrl}>{targetUrl}</a>...</p>
-    </body>
-  </html>
-) : (
-  <Layout title={`${post.data.title} | Morgan Brown's Blog`} description={excerpt} jsonLd={jsonLd}>
+<Layout
+  title={isRedirect ? "Redirecting..." : post.data.title + " | Morgan Brown's Blog"}
+  description={isRedirect ? "Redirecting..." : excerpt}
+  jsonLd={isRedirect ? undefined : jsonLd}
+  redirectUrl={isRedirect ? targetUrl : undefined}
+>
+  {isRedirect ? (
+    <p>Redirecting to <a href={targetUrl}>{targetUrl}</a>...</p>
+  ) : (
     <article>
       <p class="text-gray-600 mb-8 text-sm">
         This is a
@@ -109,7 +104,7 @@ const filename = post.id.endsWith('.md') ? post.id : `${post.id}.md`;
       <p class="text-sm text-gray-500 italic mt-8 border-t pt-4">
         See something you want to change?
         <a
-          href={`https://github.com/mhgbrown/nuxt-ghpages-blog-content/edit/master/posts/${filename}`}
+          href={"https://github.com/mhgbrown/nuxt-ghpages-blog-content/edit/master/posts/" + filename}
           class="text-blue-600 underline hover:no-underline"
           target="_blank"
           rel="noopener noreferrer"
@@ -118,5 +113,5 @@ const filename = post.id.endsWith('.md') ? post.id : `${post.id}.md`;
         </a>
       </p>
     </article>
-  </Layout>
-)}
+  )}
+</Layout>
