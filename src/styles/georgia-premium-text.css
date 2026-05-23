@@ -1,0 +1,31 @@
+.georgia-premium-text {
+  letter-spacing: 0.01em; /* Modern tracking adjustment */
+  word-spacing: 0.05em; /* Prevents dense word crowding */
+  font-kerning: normal; /* Forces designer-intended spacing */
+  text-wrap: pretty; /* Prevents single-word orphans */
+}
+
+.georgia-premium-text p {
+  max-width: 65ch; /* Comfortable reading line length */
+}
+
+/* Editorial Accent: Optional Drop Cap for Initial Paragraphs */
+.georgia-premium-text .has-drop-cap::first-letter {
+  float: left;
+  font-size: 4.5rem;
+  line-height: 0.85; /* Tightened to snap to text baseline */
+  margin-top: 4px;
+  margin-right: 10px;
+  font-weight: bold;
+  color: #1A202C; /* Slightly punchier contrast for the accent */
+}
+
+@media (prefers-color-scheme: dark) {
+  .georgia-premium-text {
+    letter-spacing: 0.02em; /* Slightly wider to handle dark mode glow */
+  }
+
+  .georgia-premium-text .has-drop-cap::first-letter {
+    color: #FFFFFF;
+  }
+}
