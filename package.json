@@ -9,7 +9,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "post": "node create-post.js"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.0",
