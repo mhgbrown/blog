@@ -55,3 +55,12 @@ export function getSHA(id) {
   const exactKey = id.endsWith('.md') ? id : `${id}.md`;
   return shaMapping[exactKey] || null;
 }
+
+export function formatDate(timestamp) {
+  return new Date(timestamp).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { getSlug, getSHA } from '../../utils/blogUtils';
+import { getSlug, getSHA, formatDate } from '../../utils/blogUtils';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -95,6 +95,7 @@ const filename = post.id.endsWith('.md') ? post.id : `${post.id}.md`;
         <a href="/">blog</a>
         post by
         <a href="https://mhgbrown.is">Morgan Brown</a>
+        on {formatDate(post.data.date)}
       </p>
 
       <h1 class="post-title">{post.data.title}</h1>
