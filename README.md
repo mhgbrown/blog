@@ -1,8 +1,8 @@
 # Morgan Brown's Blog
 
-A modern, high-performance static blog powered by **Astro**, **Tailwind CSS**, and **GitHub Actions**.
+A modern, high-performance static blog powered by **Astro**, clean/minimalist vanilla **CSS**, and **GitHub Actions**.
 
-This project has been completely modernized from the legacy Nuxt 2 & Travis CI codebase into a single-repository static setup designed for outstanding performance, ease of use, and premium SEO.
+This project has been completely modernized from the legacy Nuxt 2 & Travis CI codebase into a single-repository static setup designed for outstanding performance, ease of use, premium SEO, and ultimate simplicity.
 
 ---
 
@@ -16,7 +16,7 @@ This project has been completely modernized from the legacy Nuxt 2 & Travis CI c
   - **Smart Custom Sitemap:** Built-in compiler hook that dynamically generates `sitemap.xml` upon every build, filtering out redirection routes so crawlers only index pristine canonical paths.
 - **Modern Developer Experience:**
   - Fast compiler powered by **Astro** & **Vite**.
-  - Typography-rich layout styled with **Tailwind CSS** & `@tailwindcss/typography`.
+  - Typography-rich layout styled with custom, lightweight CSS variables & vanilla CSS optimized for light/dark mode out of the box.
   - Compile-time schema type safety using Astro's **Content Collections** (`src/content/config.js`).
 - **Fully Automated Deployment:** Built-in GitHub Actions workflow (`.github/workflows/deploy.yml`) builds and deploys your site directly to **GitHub Pages** securely on every push to `master`.
 
@@ -34,14 +34,13 @@ This project has been completely modernized from the legacy Nuxt 2 & Travis CI c
 │   │   ├── config.js             # Content Collections frontmatter schemas
 │   │   └── posts/                # Unified markdown blog posts
 │   ├── layouts/
-│   │   └── Layout.astro          # HTML document layout, SEO headers, & JSON-LD
+│   │   └── Layout.astro          # HTML document layout, SEO headers, & JSON-LD (styled with vanilla CSS)
 │   ├── pages/
 │   │   ├── index.astro           # Home page list of active/archived posts
 │   │   └── posts/[slug].astro    # Dynamic slug rendering & SHA compatibility redirects
 │   └── utils/
 │       └── blogUtils.js          # Slugifiers, SHA-to-filename mappings, & helpers
 ├── astro.config.mjs              # Astro integrations & lightweight sitemap generator
-├── tailwind.config.mjs           # Tailwind CSS configuration
 └── tsconfig.json                 # Type resolution & module compiler config
 ```
 

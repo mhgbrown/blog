@@ -48,6 +48,28 @@ const {
 </html>
 
 <style is:global>
+  :root {
+    --bg-color: white;
+    --text-color: black;
+    --link-color: blue;
+    --meta-color: #666;
+    --border-color: #e5e7eb;
+    --inline-code-bg: #f3f4f6;
+    --inline-code-text: #1f2937;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: black;
+      --text-color: white;
+      --link-color: yellow;
+      --meta-color: #aaa;
+      --border-color: #374151;
+      --inline-code-bg: #1f2937;
+      --inline-code-text: #f3f4f6;
+    }
+  }
+
   ::selection {
     background: yellow;
     color: red;
@@ -67,8 +89,8 @@ const {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    background-color: white;
-    color: black;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-size: 20px;
     cursor: default;
     -webkit-overflow-scrolling: touch;
@@ -88,13 +110,6 @@ const {
     }
   }
 
-  @media (prefers-color-scheme: dark) {
-    html {
-      color: white;
-      background-color: black;
-    }
-  }
-
   html,
   body {
     padding: 0;
@@ -104,7 +119,6 @@ const {
 
   body {
     line-height: 1.6;
-    letter-spacing: 0.01em;
   }
 
   .application-container {
@@ -122,18 +136,11 @@ const {
   /* Base styles matching old styling and new website's style */
   a,
   a:visited {
-    color: blue;
+    color: var(--link-color);
     text-decoration: underline;
   }
   a:hover {
     text-decoration: none;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    a,
-    a:visited {
-      color: yellow;
-    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -169,25 +176,13 @@ const {
 
   .archive-title {
     margin-top: 1.5rem;
-    color: #666;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .archive-title {
-      color: #aaa;
-    }
+    color: var(--meta-color);
   }
 
   .post-meta {
-    color: #666;
+    color: var(--meta-color);
     margin-bottom: 2rem;
     font-size: 0.8rem;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .post-meta {
-      color: #aaa;
-    }
   }
 
   h1.post-title {
@@ -198,30 +193,17 @@ const {
     line-height: 1.25;
   }
 
-  @media (prefers-color-scheme: dark) {
-    h1.post-title {
-      color: white;
-    }
-  }
-
   .post-content {
     margin-bottom: 3rem;
   }
 
   .post-proposal {
     font-size: 0.8rem;
-    color: #666;
+    color: var(--meta-color);
     font-style: italic;
     margin-top: 2rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border-color);
     padding-top: 1rem;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .post-proposal {
-      color: #aaa;
-      border-top-color: #1f2937;
-    }
   }
 
   /* Support markdown styling natively without heavy prose dependencies */
@@ -268,30 +250,17 @@ const {
     font-size: 0.9em;
   }
   .post-content :not(pre) > code {
-    background-color: #f3f4f6;
-    color: #1f2937;
+    background-color: var(--inline-code-bg);
+    color: var(--inline-code-text);
     padding: 0.2rem 0.4rem;
     border-radius: 0.25rem;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .post-content :not(pre) > code {
-      background-color: #1f2937;
-      color: #f3f4f6;
-    }
-  }
-
   .post-content blockquote {
-    border-left: 4px solid #e5e7eb;
+    border-left: 4px solid var(--border-color);
     padding-left: 1rem;
     font-style: italic;
     margin-bottom: 1.5rem;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .post-content blockquote {
-      border-left-color: #374151;
-    }
   }
 
   .post-content img {
