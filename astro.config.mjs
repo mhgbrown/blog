@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import fs from 'fs';
 
 // Custom lightweight sitemap integration
@@ -43,7 +42,6 @@ function customSitemap() {
 export default defineConfig({
   site: 'https://blog.mhgbrown.is',
   integrations: [
-    tailwind(),
     customSitemap(),
   ],
 });

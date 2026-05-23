@@ -1,4 +1,6 @@
 ---
+import 'reset-css/reset.css';
+
 interface Props {
   title?: string;
   description?: string;
@@ -15,7 +17,7 @@ const {
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="bg-white text-black text-[18px] leading-relaxed">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,29 +40,188 @@ const {
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
   </head>
-  <body class="font-sans antialiased min-h-screen">
-    <div class="max-w-[800px] mx-auto px-6 py-12">
+  <body class="antialiased min-h-screen">
+    <div class="application-container">
       <slot />
     </div>
   </body>
 </html>
 
 <style is:global>
-  /* Base styles matching old styling */
-  a {
-    color: blue !important;
+  ::selection {
+    background: yellow;
+    color: red;
+    text-shadow: none;
+  }
+
+  ::-moz-selection {
+    background: yellow;
+    color: red;
+    text-shadow: none;
+  }
+
+  html {
+    font-family: Georgia, serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    text-rendering: optimizeLegibility;
+    font-variant-numeric: oldstyle-nums;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    cursor: default;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    letter-spacing: 0.01em;
+  }
+
+  @media only screen and (max-width: 768px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      color: white;
+      background-color: black;
+    }
+  }
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  body {
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .application-container {
+    max-width: 800px;
+    margin: 0;
+    padding: 24px;
+  }
+
+  @media only screen and (max-width: 959px) {
+    .application-container {
+      padding: 16px;
+    }
+  }
+
+  /* Base styles matching old styling and new website's style */
+  a,
+  a:visited {
+    color: blue;
     text-decoration: underline;
   }
   a:hover {
     text-decoration: none;
   }
+
+  @media (prefers-color-scheme: dark) {
+    a,
+    a:visited {
+      color: yellow;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: normal;
   }
   p {
-    margin-bottom: 1.5em;
+    margin: 0 0 1rem 0;
+  }
+
+  /* Scoped layout classes without Tailwind */
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  ul.post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  ul.post-list li {
+    display: block;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+
+  .archive-title {
+    margin-top: 1.5rem;
+    color: #666;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .archive-title {
+      color: #aaa;
+    }
+  }
+
+  .post-meta {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .post-meta {
+      color: #aaa;
+    }
+  }
+
+  h1.post-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    h1.post-title {
+      color: white;
+    }
+  }
+
+  .post-content {
+    margin-bottom: 3rem;
+  }
+
+  .post-proposal {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .post-proposal {
+      color: #aaa;
+      border-top-color: #1f2937;
+    }
   }
 
   /* Support markdown styling natively without heavy prose dependencies */
@@ -112,12 +273,27 @@ const {
     padding: 0.2rem 0.4rem;
     border-radius: 0.25rem;
   }
+
+  @media (prefers-color-scheme: dark) {
+    .post-content :not(pre) > code {
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
+  }
+
   .post-content blockquote {
     border-left: 4px solid #e5e7eb;
     padding-left: 1rem;
     font-style: italic;
     margin-bottom: 1.5rem;
   }
+
+  @media (prefers-color-scheme: dark) {
+    .post-content blockquote {
+      border-left-color: #374151;
+    }
+  }
+
   .post-content img {
     max-width: 100%;
     height: auto;

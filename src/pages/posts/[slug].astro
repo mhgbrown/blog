@@ -5,7 +5,7 @@ import { getSlug, getSHA } from '../../utils/blogUtils';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  const paths = [];
+  const paths: any[] = [];
 
   posts.forEach((post) => {
     const slug = getSlug(post.id);
@@ -88,24 +88,23 @@ const filename = post.id.endsWith('.md') ? post.id : `${post.id}.md`;
     <p>Redirecting to <a href={targetUrl}>{targetUrl}</a>...</p>
   ) : (
     <article>
-      <p class="text-gray-600 mb-8 text-sm">
+      <p class="post-meta">
         This is a
-        <a href="/" class="text-blue-600 underline hover:no-underline">blog</a>
+        <a href="/">blog</a>
         post by
-        <a href="https://mhgbrown.is" class="text-blue-600 underline hover:no-underline">Morgan Brown</a>
+        <a href="https://mhgbrown.is">Morgan Brown</a>
       </p>
 
-      <h1 class="text-4xl font-bold mb-6 text-black leading-tight">{post.data.title}</h1>
+      <h1 class="post-title">{post.data.title}</h1>
 
-      <div class="post-content mb-12">
+      <div class="post-content">
         <Content />
       </div>
 
-      <p class="text-sm text-gray-500 italic mt-8 border-t pt-4">
+      <p class="post-proposal">
         See something you want to change?
         <a
           href={"https://github.com/mhgbrown/nuxt-ghpages-blog-content/edit/master/posts/" + filename}
-          class="text-blue-600 underline hover:no-underline"
           target="_blank"
           rel="noopener noreferrer"
         >
