@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { getSlug } from '../utils/blogUtils';
+
+const posts = await getCollection('posts');
+const sortedPosts = posts.sort((a, b) => b.data.date - a.data.date);
+
+const activePosts = sortedPosts.filter(post => !post.data.archived);
+const archivedPosts = sortedPosts.filter(post => post.data.archived);
+---
+
+<Layout title="Morgan Brown's Blog" description="Some writings.">
+  <div class="flex flex-col gap-6">
+    <div>
+      <p>
+        This is a blog by
+        <a href="https://mhgbrown.is" class="text-blue-600 underline hover:no-underline">
+          Morgan Brown
+        </a>
+      </p>
+
+      <ul class="list-none p-0 m-0 flex flex-col gap-2">
+        {activePosts.map(post => (
+          <li>
+            <a href={`/posts/${getSlug(post.id)}/`} class="text-blue-600 underline hover:no-underline">
+              {post.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {archivedPosts.length > 0 && (
+      <div>
+        <p class="mt-6 text-gray-700">
+          Older, more embarrassing posts
+        </p>
+
+        <ul class="list-none p-0 m-0 flex flex-col gap-2">
+          {archivedPosts.map(post => (
+            <li>
+              <a href={`/posts/${getSlug(post.id)}/`} class="text-blue-600 underline hover:no-underline">
+                {post.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</Layout>
