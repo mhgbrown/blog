@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { getSlug, getSHA } from '../../utils/blogUtils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const paths = [];
+
+  posts.forEach((post) => {
+    const slug = getSlug(post.id);
+    const sha = getSHA(post.id);
+
+    // 1. Path for the clean, SEO-friendly slug
+    paths.push({
+      params: { slug: slug },
+      props: { post, isRedirect: false, targetUrl: null },
+    });
+
+    // 2. Path for the legacy SHA backward compatibility
+    if (sha) {
+      paths.push({
+        params: { slug: sha },
+        props: { post, isRedirect: true, targetUrl: `/posts/${slug}/` },
+      });
+    }
+  });
+
+  return paths;
+}
+
+const { post, isRedirect, targetUrl } = Astro.props;
+
+// Render markdown content
+const { Content } = await post.render();
+
+// Generate dynamic SEO excerpt
+const lines = post.body.split('\n');
+const excerptLines = [];
+for (const line of lines) {
+  const trimmed = line.trim();
+  if (trimmed.length > 0) {
+    excerptLines.push(trimmed);
+  } else if (excerptLines.length > 0) {
+    break;
+  }
+}
+const rawExcerpt = excerptLines.join(' ')
+  .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+  .replace(/[*_`#]/g, '');
+const excerpt = rawExcerpt.length > 157 ? rawExcerpt.substring(0, 157) + '...' : rawExcerpt;
+
+const isoDate = new Date(post.data.date).toISOString();
+
+// Rich Google JSON-LD Metadata
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "datePublished": isoDate,
+  "dateModified": isoDate,
+  "author": {
+    "@type": "Person",
+    "name": "Morgan Brown",
+    "url": "https://mhgbrown.is"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Morgan Brown's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.mhgbrown.is/favicon.png"
+    }
+  },
+  "description": excerpt
+};
+
+const filename = post.id.endsWith('.md') ? post.id : `${post.id}.md`;
+---
+
+{isRedirect ? (
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta http-equiv="refresh" content={`0;url=${targetUrl}`} />
+      <link rel="canonical" href={targetUrl} />
+      <title>Redirecting...</title>
+    </head>
+    <body>
+      <p>Redirecting to <a href={targetUrl}>{targetUrl}</a>...</p>
+    </body>
+  </html>
+) : (
+  <Layout title={`${post.data.title} | Morgan Brown's Blog`} description={excerpt} jsonLd={jsonLd}>
+    <article>
+      <p class="text-gray-600 mb-8 text-sm">
+        This is a
+        <a href="/" class="text-blue-600 underline hover:no-underline">blog</a>
+        post by
+        <a href="https://mhgbrown.is" class="text-blue-600 underline hover:no-underline">Morgan Brown</a>
+      </p>
+
+      <h1 class="text-4xl font-bold mb-6 text-black leading-tight">{post.data.title}</h1>
+
+      <div class="post-content mb-12">
+        <Content />
+      </div>
+
+      <p class="text-sm text-gray-500 italic mt-8 border-t pt-4">
+        See something you want to change?
+        <a
+          href={`https://github.com/mhgbrown/nuxt-ghpages-blog-content/edit/master/posts/${filename}`}
+          class="text-blue-600 underline hover:no-underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Submit a proposal via Github.
+        </a>
+      </p>
+    </article>
+  </Layout>
+)}
