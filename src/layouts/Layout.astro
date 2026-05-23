@@ -6,13 +6,15 @@ interface Props {
   description?: string;
   jsonLd?: Record<string, any>;
   redirectUrl?: string;
+  canonicalUrl?: string;
 }
 
 const {
   title = "Morgan Brown's Blog",
   description = "Some writings.",
   jsonLd,
-  redirectUrl
+  redirectUrl,
+  canonicalUrl
 } = Astro.props;
 ---
 
@@ -26,6 +28,9 @@ const {
     {redirectUrl && (
       <meta http-equiv="refresh" content={"0;url=" + redirectUrl} />
       <link rel="canonical" href={redirectUrl} />
+    )}
+    {!redirectUrl && canonicalUrl && (
+      <link rel="canonical" href={canonicalUrl} />
     )}
 
     <title>{title}</title>

@@ -1,0 +1,75 @@
+# Morgan Brown's Blog — AI Developer Guidelines & Rules
+
+This file is a system prompt and developer contract for Cursor / any other AI engineer working on this repository. Follow these instructions strictly to preserve performance, accessibility, SEO superiority, and codebase maintainability.
+
+---
+
+## 1. System Prompt & Persona
+
+You are Cline / Cursor / an elite software engineering AI. Your mission is to implement exactly what is requested with the absolute simplest, dependency-free solution that fulfills all requirements.
+* **Keep Code Clean and Simple:** Value precision and reliability. The simplest solution that fulfills all requirements is always preferred.
+* **Avoid unnecessary dependencies:** Do not install heavy NPM or node packages for layout, styling, sitemaps, or markdown parsing when native JS or lightweight inline functions work perfectly.
+* **Do not add unrequested features:** Never add complexity or scope beyond what is explicitly requested.
+
+---
+
+## 2. Core Architectural Pillars (Do Not Break)
+
+- **Zero-Dependency Vanilla CSS:** This blog uses pure, highly optimized CSS. We do **NOT** use Tailwind CSS, PostCSS, Sass, or CSS-in-JS. Keep global styles and markdown styling in the `<style is:global>` block inside `src/layouts/Layout.astro`.
+- **Strict Theme Consistency:** All color-related rules must use the CSS variables declared under `:root` and `@media (prefers-color-scheme: dark)` in `src/layouts/Layout.astro`.
+  - `--bg-color` (white / black)
+  - `--text-color` (black / white)
+  - `--link-color` (blue / yellow)
+  - `--meta-color` (#666 / #aaa)
+  - `--border-color` (#e5e7eb / #374151)
+  - `--inline-code-bg` (#f3f4f6 / #1f2937)
+  - `--inline-code-text` (#1f2937 / #f3f4f6)
+- **Astro Content Collections:** Blog posts are managed inside `src/content/posts/` and strictly validated using the schema defined in `src/content/config.js`.
+- **Legacy SHA-to-Slug Redirect Preservation:** For backwards compatibility, legacy SHA paths (`/posts/[sha]/`) must perform high-performance HTML redirects to their human-friendly counterparts (`/posts/[slug]/`). The mappings are defined in `src/utils/blogUtils.js`.
+- **Custom Lightweight Sitemap:** Sitemap compilation is integrated directly into `astro.config.mjs` to dynamically generate clean, search-engine-ready XML files on build, filtering out redirection routes.
+
+---
+
+## 3. Critical Code & Routing Patterns
+
+### A. Dynamic Dual-Role Routing (`src/pages/posts/[slug].astro`)
+This file resolves both clean slugs (`/posts/un-cyanogenmoding-a-motorola-droid/`) and legacy Git SHAs (`/posts/8fbc7c69f817fb6b3ecd6ccb634b7cfa06be4dfe/`) in the same dynamic route using `getStaticPaths()`.
+* **Redirection Route:** Renders an instant HTML `<meta http-equiv="refresh" content="0;url=..."/>` redirect.
+* **SEO Canonicals:** Redirection routes must NOT have JSON-LD schema or sitemap listings. They must declare `<link rel="canonical" href="...canonical page..."/>` pointing to the real slug.
+* **Post Route:** Must include a canonical link (`https://blog.mhgbrown.is/posts/[slug]/`) to avoid search engines indexing trailing slash variations differently. Renders complete SEO schema and post content.
+
+### B. Smart Custom Sitemap (`astro.config.mjs`)
+The sitemap integration automatically runs on `astro:build:done`.
+* **Constraint:** It filters out any compiled pages that match a 40-character legacy SHA pattern (`/[a-f0-9]{40}/`).
+* **Rule:** Never replace this hook with a generic NPM sitemap library. It is designed to keep our index clean of redirect routes.
+
+### C. Compile-Time Excerpting
+Open Graph and JSON-LD meta descriptions are generated directly inside `[slug].astro` at compile time by scanning `post.body`.
+* It extracts the first paragraph and strips markdown characters (backticks, stars, hashes, and bracketed links).
+* It normalizes whitespace and truncates at exactly `157` characters.
+* **Rule:** Do not install runtime markdown parsers or expensive libraries for summaries.
+
+---
+
+## 4. HTML & Semantic Web Rules
+
+- **Strict Semantic Elements:** Use `<article>` for posts, `<main>` for layouts, `<header>` and `<footer>` where applicable. Do not default to `<div>`.
+- **Accessibility (a11y) First:**
+  - Always keep `.sr-only` class available for visually hidden screen-reader labels.
+  - Links must have descriptive text (no "click here" or "read more").
+  - Use semantic headers hierarchy (`<h1>`, `<h2>`, etc.).
+- **Zero Unnecessary Divs:** Avoid wrapper hell. Use CSS Flexbox/Grid on the layout elements directly.
+- **Responsive Typography:**
+  - Standard base font-size is `20px` for desktop, `18px` for tablets (`max-width: 768px`), and `16px` for mobile (`max-width: 480px`). This keeps typography extremely legible.
+  - Avoid inline styles.
+
+---
+
+## 5. Development Workflows & Verification
+
+- **Creating a Blog Post:** Run `npm run post "Title of Post"`. This executes `create-post.js` and creates a template file pre-populated with correct metadata and timestamps.
+- **Adding Legacy Mappings:** If adding imported posts, add the markdown filename and its historical 40-character commit SHA to `shaMapping` in `src/utils/blogUtils.js`.
+- **Strict Verification before Completion:** Always run `npm run build` inside `nuxt-ghpages-blog` to verify:
+  - Clean TypeScript Compilation.
+  - Correct static generation for pages.
+  - Successful generation of `/dist/sitemap.xml` and `/dist/sitemap-index.xml`.
