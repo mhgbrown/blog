@@ -1,9 +1,11 @@
 {
-  "name": "blog",
+  "name": "morgan-brown-blog",
   "version": "1.0.0",
-  "description": "Morgan Brown's Blog",
-  "private": true,
+  "description": "Morgan Brown's static blog powered by Astro and GitHub Pages.",
   "type": "module",
+  "engines": {
+    "node": ">=24.14.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
