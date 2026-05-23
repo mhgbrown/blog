@@ -11,13 +11,21 @@
 
 /* Editorial Accent: Optional Drop Cap for Initial Paragraphs */
 .georgia-premium-text .has-drop-cap::first-letter {
+  /* 1. Force the layout engine to wrap text around the letter */
   float: left;
-  font-size: 4.5rem;
-  line-height: 0.85; /* Tightened to snap to text baseline */
-  margin-top: 4px;
-  margin-right: 10px;
+
+  /* 2. Set explicit, predictable sizing (matching roughly 2 lines of text) */
+  font-size: 3.8rem;
+  line-height: 0.75;
+
+  /* 3. Perfect pixel alignment adjustments */
+  margin-top: 6px;
+  margin-right: 12px;
+  padding-bottom: 2px;
+
+  /* 4. Aesthetics */
   font-weight: bold;
-  color: #1A202C; /* Slightly punchier contrast for the accent */
+  color: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
